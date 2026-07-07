@@ -1,0 +1,15 @@
+<div style="background:white; padding:20px; border-radius:8px; border:1px solid #dbdbdb;">
+    <h3>📋 All Items</h3>
+    {% if items %}
+        <ul style="list-style:none; padding:0;">
+        {% for item in items %}
+            <li style="padding:10px 0; border-bottom:1px solid #f0f0f0; display:flex; justify-content:space-between;">
+                <span>{{ item.name }}</span>
+                <span style="color:#0095f6; font-weight:600;">${{ item.price }}</span>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p style="color:#8e8e8e; text-align:center;">No items found</p>
+    {% endif %}
+</div>

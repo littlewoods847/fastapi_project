@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HTMX Test</title>
+    <script src="/static/htmx.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fafafa; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+        .header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px solid #dbdbdb; }
+        .menu-container { position: relative; display: inline-block; }
+        .menu-button { background: none; border: none; cursor: pointer; padding: 5px; }
+        .menu-button:hover { background: #f0f0f0; border-radius: 50%; }
+        .dropdown-menu { display: none; position: absolute; top: 40px; right: 0; background: white; border: 1px solid #dbdbdb; border-radius: 8px; min-width: 200px; box-shadow: 0 2px 12px rgba(0,0,0,0.15); z-index: 1000; }
+        .dropdown-menu.show { display: block; }
+        .dropdown-menu a { display: block; padding: 10px 16px; color: #333; text-decoration: none; font-size: 14px; cursor: pointer; }
+        .dropdown-menu a:hover { background: #fafafa; }
+        .dropdown-divider { height: 1px; background: #dbdbdb; margin: 4px 0; }
+        .search-form { margin: 20px 0; padding: 15px 0; border-bottom: 1px solid #dbdbdb; }
+        .search-form input { padding: 8px; border: 1px solid #dbdbdb; border-radius: 4px; width: 70%; }
+        .search-form button { padding: 8px 16px; background: #0095f6; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        #contentArea { margin-top: 20px; min-height: 100px; animation: fadeIn 0.3s ease-in; }
+        .item-list { margin-top: 20px; }
+        .item { padding: 10px; border-bottom: 1px solid #f0f0f0; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>HTMX Test</h2>
+            <div class="menu-container">
+                <button class="menu-button" id="toggleMenuBtn">
+                    <img src="/static/SVG/list-svgrepo-com.svg" alt="Menu" style="width:28px; height:28px;">
+                </button>
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <a href="#" hx-get="/settings/" hx-target="#contentArea" hx-swap="innerHTML">⚙️ Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" hx-get="/add-form/" hx-target="#contentArea" hx-swap="innerHTML">➕ Add Item</a>
+                    <a href="#" hx-get="/edit-form/" hx-target="#contentArea" hx-swap="innerHTML">✏️ Edit Item</a>
+                    <a href="#" hx-get="/delete-form/" hx-target="#contentArea" hx-swap="innerHTML">🗑️ Delete Item</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" hx-get="/list-items/" hx-target="#contentArea" hx-swap="innerHTML">📋 View All Items</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="search-form">
+            <form hx-post="/add-item/" hx-target="#item-list" hx-swap="beforeend">
+                <input type="text" name="search" placeholder="Search...">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        
+        <div id="contentArea">
+            <p style="color: #8e8e8e; text-align: center;">Select an option from the menu</p>
+        </div>
+        
+        <div class="item-list" id="item-list">
+            <h3>Items</h3>
+            {% for item in items %}
+                <div class="item">{{ item.name }} - ${{ item.price }}</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('toggleMenuBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('dropdownMenu').classList.toggle('show');
+        });
+        
+        document.addEventListener('click', function() {
+            document.getElementById('dropdownMenu').classList.remove('show');
+        });
+        
+        document.getElementById('dropdownMenu').addEventListener('click', function(e) {
+            if (e.target.tagName === 'A') {
+                setTimeout(() => {
+                    this.classList.remove('show');
+                }, 200);
+            }
+        });
+    </script>
+</body>
+</html>

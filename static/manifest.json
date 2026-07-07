@@ -1,0 +1,16 @@
+{
+  "name": "HTMX Test App",
+  "short_name": "HTMX App",
+  "description": "A FastAPI HTMX web app",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0095f6",
+  "icons": [
+    {
+      "src": "/static/SVG/list-svgrepo-com.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ]
+}

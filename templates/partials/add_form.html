@@ -1,0 +1,7 @@
+<div style="background:white; padding:20px; border-radius:8px; border:1px solid #dbdbdb;">
+    <h3>➕ Add New Item</h3>
+    <form hx-post="/add-item/" hx-target="#item-list" hx-swap="beforeend">
+        <input type="text" name="search" placeholder="Item name" style="padding:8px; margin:5px 0; width:100%; border:1px solid #dbdbdb; border-radius:4px;">
+        <button type="submit" style="padding:8px 16px; background:#0095f6; color:white; border:none; border-radius:4px; cursor:pointer;">Add Item</button>
+    </form>
+</div>
