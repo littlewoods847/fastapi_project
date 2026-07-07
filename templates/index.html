@@ -2,27 +2,231 @@
 <html>
 <head>
     <title>HTMX Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <script src="/static/htmx.min.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fafafa; padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
-        .header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px solid #dbdbdb; }
-        .menu-container { position: relative; display: inline-block; }
-        .menu-button { background: none; border: none; cursor: pointer; padding: 5px; }
-        .menu-button:hover { background: #f0f0f0; border-radius: 50%; }
-        .dropdown-menu { display: none; position: absolute; top: 40px; right: 0; background: white; border: 1px solid #dbdbdb; border-radius: 8px; min-width: 200px; box-shadow: 0 2px 12px rgba(0,0,0,0.15); z-index: 1000; }
-        .dropdown-menu.show { display: block; }
-        .dropdown-menu a { display: block; padding: 10px 16px; color: #333; text-decoration: none; font-size: 14px; cursor: pointer; }
-        .dropdown-menu a:hover { background: #fafafa; }
-        .dropdown-divider { height: 1px; background: #dbdbdb; margin: 4px 0; }
-        .search-form { margin: 20px 0; padding: 15px 0; border-bottom: 1px solid #dbdbdb; }
-        .search-form input { padding: 8px; border: 1px solid #dbdbdb; border-radius: 4px; width: 70%; }
-        .search-form button { padding: 8px 16px; background: #0095f6; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        #contentArea { margin-top: 20px; min-height: 100px; animation: fadeIn 0.3s ease-in; }
-        .item-list { margin-top: 20px; }
-        .item { padding: 10px; border-bottom: 1px solid #f0f0f0; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            background: #fafafa; 
+            padding: 10px;
+        }
+        
+        .container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 15px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+        }
+        
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding-bottom: 15px; 
+            border-bottom: 1px solid #dbdbdb;
+        }
+        
+        .header h2 { 
+            font-size: 20px; 
+        }
+        
+        .menu-container { 
+            position: relative; 
+            display: inline-block; 
+        }
+        
+        .menu-button { 
+            background: none; 
+            border: none; 
+            cursor: pointer; 
+            padding: 8px;
+            min-height: 44px;
+            min-width: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .menu-button img { 
+            width: 28px; 
+            height: 28px; 
+        }
+        
+        .menu-button:active { 
+            opacity: 0.6; 
+        }
+        
+        .dropdown-menu { 
+            display: none; 
+            position: fixed;
+            top: 60px;
+            right: 10px;
+            left: 10px;
+            max-width: 300px;
+            margin: 0 auto;
+            background: white; 
+            border: 1px solid #dbdbdb; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            padding: 8px 0;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .dropdown-menu.show { 
+            display: block; 
+        }
+        
+        .dropdown-menu a { 
+            display: block; 
+            padding: 12px 16px; 
+            color: #262626; 
+            text-decoration: none; 
+            font-size: 14px;
+            min-height: 44px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .dropdown-menu a:active { 
+            background: #f0f0f0; 
+        }
+        
+        .dropdown-divider { 
+            height: 1px; 
+            background: #dbdbdb; 
+            margin: 4px 0; 
+        }
+        
+        .search-form { 
+            margin: 15px 0; 
+            padding: 15px 0; 
+            border-bottom: 1px solid #dbdbdb;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .search-form input { 
+            flex: 1;
+            min-width: 150px;
+            padding: 10px; 
+            border: 1px solid #dbdbdb; 
+            border-radius: 4px; 
+            font-size: 16px;
+        }
+        
+        .search-form button { 
+            padding: 10px 20px; 
+            background: #0095f6; 
+            color: white; 
+            border: none; 
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            min-height: 44px;
+            min-width: 60px;
+        }
+        
+        .search-form button:active { 
+            opacity: 0.8; 
+        }
+        
+        #contentArea { 
+            margin-top: 15px; 
+            min-height: 100px; 
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        .item-list { 
+            margin-top: 20px; 
+        }
+        
+        .item { 
+            padding: 12px 0; 
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 16px;
+            word-break: break-word;
+        }
+        
+        .item:last-child { 
+            border-bottom: none; 
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Mobile-first responsive */
+        @media (max-width: 480px) {
+            body { 
+                padding: 5px; 
+            }
+            .container { 
+                padding: 10px; 
+                border-radius: 4px;
+            }
+            .header h2 { 
+                font-size: 17px; 
+            }
+            .search-form input { 
+                font-size: 14px;
+                padding: 8px;
+                min-width: 120px;
+            }
+            .search-form button { 
+                font-size: 14px;
+                padding: 8px 16px;
+                min-height: 38px;
+            }
+            .item { 
+                font-size: 14px;
+                padding: 10px 0;
+            }
+            .dropdown-menu { 
+                top: 50px;
+                right: 5px;
+                left: 5px;
+                max-width: none;
+            }
+            .dropdown-menu a { 
+                padding: 10px 14px;
+                font-size: 13px;
+                min-height: 38px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .search-form input { 
+                min-width: 100%;
+            }
+            .search-form button { 
+                width: 100%;
+            }
+            .header h2 { 
+                font-size: 15px; 
+            }
+        }
+        
+        /* Touch-friendly */
+        button, a { 
+            touch-action: manipulation; 
+        }
+        
+        /* Prevent text selection on menu clicks */
+        .menu-button, .dropdown-menu a {
+            user-select: none;
+            -webkit-user-select: none;
+        }
     </style>
 </head>
 <body>
@@ -31,7 +235,7 @@
             <h2>HTMX Test</h2>
             <div class="menu-container">
                 <button class="menu-button" id="toggleMenuBtn">
-                    <img src="/static/SVG/list-svgrepo-com.svg" alt="Menu" style="width:28px; height:28px;">
+                    <img src="/static/SVG/list-svgrepo-com.svg" alt="Menu">
                 </button>
                 <div class="dropdown-menu" id="dropdownMenu">
                     <a href="#" hx-get="/settings/" hx-target="#contentArea" hx-swap="innerHTML">⚙️ Settings</a>
@@ -46,14 +250,14 @@
         </div>
         
         <div class="search-form">
-            <form hx-post="/add-item/" hx-target="#item-list" hx-swap="beforeend">
+            <form hx-post="/add-item/" hx-target="#item-list" hx-swap="beforeend" style="display:flex; gap:8px; width:100%; flex-wrap:wrap;">
                 <input type="text" name="search" placeholder="Search...">
                 <button type="submit">Search</button>
             </form>
         </div>
         
         <div id="contentArea">
-            <p style="color: #8e8e8e; text-align: center;">Select an option from the menu</p>
+            <p style="color: #8e8e8e; text-align: center; padding: 20px 0;">Select an option from the menu</p>
         </div>
         
         <div class="item-list" id="item-list">
@@ -65,20 +269,36 @@
     </div>
 
     <script>
+        // Toggle dropdown
         document.getElementById('toggleMenuBtn').addEventListener('click', function(e) {
             e.stopPropagation();
             document.getElementById('dropdownMenu').classList.toggle('show');
         });
         
-        document.addEventListener('click', function() {
-            document.getElementById('dropdownMenu').classList.remove('show');
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('dropdownMenu');
+            const btn = document.getElementById('toggleMenuBtn');
+            if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                menu.classList.remove('show');
+            }
         });
         
+        // Close dropdown after clicking an item
         document.getElementById('dropdownMenu').addEventListener('click', function(e) {
             if (e.target.tagName === 'A') {
                 setTimeout(() => {
                     this.classList.remove('show');
                 }, 200);
+            }
+        });
+        
+        // Close dropdown on touch outside
+        document.addEventListener('touchstart', function(e) {
+            const menu = document.getElementById('dropdownMenu');
+            const btn = document.getElementById('toggleMenuBtn');
+            if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                menu.classList.remove('show');
             }
         });
     </script>
